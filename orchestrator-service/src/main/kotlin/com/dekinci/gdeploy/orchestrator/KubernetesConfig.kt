@@ -4,6 +4,8 @@ import com.dekinci.gdeploy.orchestrator.deployment.DefaultGranularClient
 import com.dekinci.gdeploy.orchestrator.deployment.GranularClient
 import io.fabric8.kubernetes.client.Config
 import io.fabric8.kubernetes.client.ConfigBuilder
+import io.fabric8.kubernetes.client.DefaultKubernetesClient
+import io.fabric8.kubernetes.client.KubernetesClient
 import me.snowdrop.istio.client.DefaultIstioClient
 import me.snowdrop.istio.client.IstioClient
 import org.springframework.context.annotation.Bean
@@ -13,16 +15,16 @@ import java.util.*
 @Configuration
 class KubernetesConfig {
 
-//    @Bean
-//    fun kubernetesClient(): KubernetesClient {
-//        return DefaultKubernetesClient(
-//            ConfigBuilder()
-//                .withMasterUrl("https://10.0.11.1:6443")
-//                .withCaCertData(Base64.getDecoder().decode(k8sCA).decodeToString())
-//                .withClientKeyData(Base64.getDecoder().decode(k8sAdminToken).decodeToString())
-//                .build()
-//        )
-//    }
+    @Bean
+    fun kubernetesClient(): KubernetesClient {
+        return DefaultKubernetesClient(
+            ConfigBuilder()
+                .withMasterUrl("https://10.0.11.1:6443")
+                .withCaCertData(k8sCA)
+                .withOauthToken(Base64.getDecoder().decode(k8sAdminToken).decodeToString())
+                .build()
+        )
+    }
 
     @Bean
     fun istioClient(): IstioClient {

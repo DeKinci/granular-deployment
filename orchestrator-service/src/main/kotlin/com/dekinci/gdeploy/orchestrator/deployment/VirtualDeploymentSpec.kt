@@ -25,6 +25,9 @@ class VirtualDeploymentSpec {
     @JsonProperty("deployment")
     private var deployment: DeploymentSpec = DeploymentSpec()
 
+    @JsonProperty("boundService")
+    private var boundService: String = ""
+
     fun setVersions(versions: List<String>) {
         this.versions = versions
     }
@@ -36,4 +39,10 @@ class VirtualDeploymentSpec {
     }
 
     fun getDeployment() = deployment
+
+    fun setBoundService(boundService: String) {
+        this.boundService = boundService
+    }
+
+    fun getBoundService() = boundService
 }
