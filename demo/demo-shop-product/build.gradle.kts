@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.dekinci.granular-deployment.demo"
-version = "0.0.1"
+version = "v1"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 configurations {
@@ -51,4 +51,16 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.bootBuildImage {
+    imageName = "10.0.10.1:5000/gd-${project.name}:${project.version}"
+    isPublish = true
+    docker {
+        publishRegistry {
+            username = "techpriest"
+            password = "techpriest"
+            url = "http://10.0.10.1:5000"
+        }
+    }
 }

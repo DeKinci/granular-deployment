@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory
 import org.springframework.stereotype.Service
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 
 @Service
@@ -22,6 +23,7 @@ class ApiWatchRouterService(
 ) {
     private val log = LoggerFactory.getLogger(this::class.java)
     private val watchExecutor = Executors.newCachedThreadPool(CustomizableThreadFactory("k8s-watch-pool-"))
+    private val retryExecutor = Executors.newScheduledThreadPool(1, CustomizableThreadFactory("k8s-retry-pool-"))
 
     @PostConstruct
     fun startWatch() {
@@ -61,11 +63,22 @@ class ApiWatchRouterService(
         log.debug("${destinationRule.resName()} Watched $action")
 
         if (action == Watcher.Action.ADDED || action == Watcher.Action.MODIFIED || action == Watcher.Action.DELETED) {
-            val newRoutes = apiVersionService.generateClientRoutes().flatten()
-            log.info("Destination updated, applying routes \n${newRoutes.joinToString("\n")}")
-            newRoutes.forEach {
-                clientRoutingService.routeSource(it.source, it.destination)
-            }
+            fullUpdate()
+        }
+    }
+
+    private fun fullUpdate() {
+        val newRoutes =try {
+            apiVersionService.generateClientRoutes().flatten()
+        } catch (e: IllegalStateException) {
+            retryExecutor.schedule({ fullUpdate() }, 30, TimeUnit.SECONDS)
+            log.warn(e.message)
+            return
+        }
+
+        log.info("Destination updated, applying routes \n${newRoutes.joinToString("\n")}")
+        newRoutes.forEach {
+            clientRoutingService.routeSource(it.source, it.destination)
         }
     }
 }

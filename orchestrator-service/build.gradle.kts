@@ -59,3 +59,15 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+tasks.bootBuildImage {
+    imageName = "10.0.10.1:5000/granular-deployment-orchestrator:${project.version}"
+//    isPublish = true
+//    docker {
+//        publishRegistry {
+//            username = "techpriest"
+//            password = "techpriest"
+//            url = "http://10.0.10.1:5000"
+//        }
+//    }
+}
