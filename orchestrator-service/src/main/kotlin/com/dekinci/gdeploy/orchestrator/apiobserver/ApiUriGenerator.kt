@@ -16,7 +16,7 @@ class GatewayApiUriGenerator : ApiUriGenerator {
 }
 
 @Service
-@Profile("default")
+@Profile(value = ["default", "kubernetes"])
 class KubernetesApiUriGenerator : ApiUriGenerator {
     override fun apiUri(service: CloudService, namespace: String) =
         "http://${service.service}.$namespace/meta/api"

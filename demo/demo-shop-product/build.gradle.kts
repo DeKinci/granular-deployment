@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.dekinci.granular-deployment.demo"
-version = "v1"
+version = "v3"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 configurations {

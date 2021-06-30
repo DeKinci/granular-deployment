@@ -10,7 +10,7 @@ spec:
     - route:
         - destination:
             host: demo-shop-cart
-            subset: v1
+            subset: v2
 ---
 
 apiVersion: networking.istio.io/v1alpha3
@@ -41,7 +41,10 @@ metadata:
   namespace: gd-demo-shop
 spec:
   host: demo-shop-cart
-  subsets: []
+  subsets:
+    - name: v2
+      labels:
+        version: v2
 ---
 
 apiVersion: v1
@@ -67,6 +70,7 @@ spec:
   boundService: demo-shop-cart
   versions:
     - v1
+    - v2
   deployment:
     replicas: 1
     selector:

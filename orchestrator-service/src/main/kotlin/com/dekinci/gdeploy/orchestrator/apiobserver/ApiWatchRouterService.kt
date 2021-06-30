@@ -23,7 +23,7 @@ class ApiWatchRouterService(
 ) {
     private val log = LoggerFactory.getLogger(this::class.java)
     private val watchExecutor = Executors.newCachedThreadPool(CustomizableThreadFactory("k8s-watch-pool-"))
-    private val retryExecutor = Executors.newScheduledThreadPool(1, CustomizableThreadFactory("k8s-retry-pool-"))
+    private val retryExecutor = Executors.newScheduledThreadPool(4, CustomizableThreadFactory("k8s-retry-pool-"))
 
     @PostConstruct
     fun startWatch() {
