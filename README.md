@@ -21,6 +21,6 @@ significant increase in the automation of an API update process.
 
 Add a client library to a service - establishing a dependency.
 
-The deployment system will handle rollout and restart order as well as versioning - similar to how it already does that for libraries.
+The deployment system will handle rollout and restart order as well as versioning - similar to how the build system does it for libraries.
 
-Comes with a build time cluster configuration validation!
+Comes with a build-time cluster configuration validation!
