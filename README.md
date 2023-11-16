@@ -7,7 +7,7 @@
 One of the problems in the development and maintenance of
 systems with a microservice architecture is the difficulty of updating APIs while
 maintaining backward compatibility and constant system availability.
-The paper proposes a solution to the problem - a method of automated
+The paper proposes a solution - a method of automated
 deployment and management of a dependency graph of services by using the
 capabilities of infrastructure such as deployment orchestration and
 service mesh.
